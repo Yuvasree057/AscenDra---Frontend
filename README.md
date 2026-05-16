@@ -1,16 +1,40 @@
-# React + Vite
+# 🚀 AscenDra Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of **ASCENDRA**, an AI-powered Career Intelligence Platform.
 
-Currently, two official plugins are available:
+It is built using:
+- React (Vite)
+- React Router DOM
+- Axios
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+# 🎯 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🔐 Login / Register UI
+- 👤 User Profile management
+- 🧠 AI Career Dashboard
+- 📊 Skill-based job matching UI
+- 🧭 Learning Roadmap interface
+- 🎓 Internship recommendation UI
+- 🤖 Milliena AI chatbot integration
+- 📈 Analytics dashboards
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 🏗️ Tech Stack
+
+- React (Vite)
+- JavaScript (ES6+)
+- React Router
+- Axios (API calls)
+- CSS / Tailwind (if used)
+
+---
+
+# ⚙️ Setup Instructions
+
+## 1. Install dependencies
+
+```bash
+npm install
