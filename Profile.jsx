@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { 
@@ -56,25 +57,24 @@ export default function Profile() {
         location: dataToSave.location,
         bio: dataToSave.bio,
         education: dataToSave.education,
-        linkedin: dataToSave.linkedin,
-        github: dataToSave.github,
+        linkedin_url: dataToSave.linkedin_url || dataToSave.linkedin,
+        github_url: dataToSave.github_url || dataToSave.github,
         skills: dataToSave.skills,
         interests: dataToSave.interests,
         profile_picture: dataToSave.profile_picture
       };
       
-      const res = await fetch('http://localhost:8000/api/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/profile`, {
         method: 'POST',
-        headers: {
+        headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
       });
-      
       if (res.ok) {
         await fetchProfile();
-        if (!overrideData) setIsEditing(false);
+        if (!dataToSave) setIsEditing(false);
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 3000);
       }
@@ -107,6 +107,12 @@ export default function Profile() {
           <ArrowLeft size={18} style={{ marginRight: '8px' }} /> Back to Dashboard
         </RouterLink>
         
+        {saveSuccess && (
+          <div style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10B981', padding: '12px 24px', borderRadius: '8px', marginBottom: '24px', textAlign: 'center', border: '1px solid #10B981' }}>
+            Profile saved successfully!
+          </div>
+        )}
+
         <header className="profile-header glass-panel flex-between" style={{ padding: '40px', marginBottom: '24px' }}>
           <div className="profile-info flex-center" style={{ gap: '24px', justifyContent: 'flex-start' }}>
             <div className="profile-avatar" style={{ position: 'relative', overflow: 'hidden' }}>
@@ -155,13 +161,13 @@ export default function Profile() {
               <div className="social-links flex-center" style={{ justifyContent: 'flex-start', gap: '16px', marginTop: '16px' }}>
                 {isEditing ? (
                   <>
-                    <input type="text" className="input-field" placeholder="LinkedIn URL" value={formData.linkedin} onChange={e => setFormData({...formData, linkedin: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
-                    <input type="text" className="input-field" placeholder="GitHub URL" value={formData.github} onChange={e => setFormData({...formData, github: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
+                    <input type="text" className="input-field" placeholder="LinkedIn URL" value={formData.linkedin_url || formData.linkedin} onChange={e => setFormData({...formData, linkedin_url: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
+                    <input type="text" className="input-field" placeholder="GitHub URL" value={formData.github_url || formData.github} onChange={e => setFormData({...formData, github_url: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
                   </>
                 ) : (
                   <>
-                    {formData.linkedin && <a href={formData.linkedin} target="_blank" rel="noreferrer" className="social-icon"><Link size={20} /></a>}
-                    {formData.github && <a href={formData.github} target="_blank" rel="noreferrer" className="social-icon"><Globe size={20} /></a>}
+                    {(formData.linkedin_url || formData.linkedin) && <a href={formData.linkedin_url || formData.linkedin} target="_blank" rel="noreferrer" className="social-icon"><Link size={20} /> LinkedIn</a>}
+                    {(formData.github_url || formData.github) && <a href={formData.github_url || formData.github} target="_blank" rel="noreferrer" className="social-icon"><Globe size={20} /> GitHub</a>}
                   </>
                 )}
               </div>
@@ -176,7 +182,7 @@ export default function Profile() {
             {isEditing ? (
               <div className="flex-center" style={{ gap: '12px' }}>
                 <button className="btn-secondary" onClick={() => setIsEditing(false)}><X size={16} style={{marginRight: '8px'}}/> Cancel</button>
-                <button className="btn-primary" onClick={() => handleSave(null)} disabled={isSaving}>
+                <button className="btn-primary" onClick={() => handleSave(formData)} disabled={isSaving}>
                   {isSaving ? 'Saving...' : <><Check size={16} style={{marginRight: '8px'}}/> Save Changes</>}
                 </button>
               </div>
