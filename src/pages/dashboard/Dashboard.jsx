@@ -18,7 +18,12 @@ export default function Dashboard() {
   const userName = user?.name || profile.name || 'User';
   const isNewUser = !analysis || !analysis.career_matches || analysis.career_matches.length === 0;
 
-  const matches = analysis?.career_matches || [];
+  const rawMatches = analysis?.career_matches || [];
+  const totalWeight = rawMatches.reduce((acc, _, idx) => acc + Math.pow(0.4, idx), 0);
+  const matches = rawMatches.map((match, idx) => ({
+    ...match,
+    match_percentage: Math.round((Math.pow(0.4, idx) / totalWeight) * 100)
+  }));
   const topMatch = matches[0] || null;
 
   const actionText = analysis?.recommended_action || "Complete React Hooks Module";
