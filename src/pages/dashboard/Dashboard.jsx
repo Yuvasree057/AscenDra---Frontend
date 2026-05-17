@@ -162,12 +162,16 @@ export default function Dashboard() {
               </div>
               
               {roadmap.length > 0 ? roadmap.map((item, index) => (
-                <div key={index} className={`roadmap-step ${item.status === 'active' ? 'active' : 'pending'}`}>
+                <div 
+                  key={index} 
+                  className={`roadmap-step ${item.status === 'active' ? 'active' : 'pending'}`}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => alert(`💎 Premium Feature:\nUnlock the complete curriculum and expert mentorship for: "${item.step}" by upgrading to Ascendra Premium.`)}
+                >
                   {item.status === 'active' ? <div className="step-indicator pulsing"></div> : <div className="step-indicator"></div>}
                   <div className="step-content">
                     <h4 className={`font-medium ${item.status === 'active' ? 'text-white' : 'text-muted'}`}>{item.step}</h4>
-                    <p className="p-small">{item.status === 'active' ? 'In Progress' : 'Locked'}</p>
-                    {item.status === 'active' && <div className="progress-bar-small"><div className="fill" style={{width: '20%'}}></div></div>}
+                    <p className="p-small" style={{ color: 'var(--accent-blue)', fontWeight: 600 }}>Click to Learn ↗</p>
                   </div>
                 </div>
               )) : (
