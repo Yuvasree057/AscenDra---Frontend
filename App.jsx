@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Welcome from './pages/Welcome';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -42,6 +43,7 @@ function App() {
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       </Routes>
       <Chatbot />
+      <SpeedInsights />
     </div>
   );
 }
