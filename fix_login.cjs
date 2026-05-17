@@ -1,25 +1,17 @@
-import { API_BASE_URL } from '../../config';
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Phone, Lock, ArrowRight, CheckCircle } from 'lucide-react';
-import './Auth.css';
+const fs = require('fs');
+const file = 'c:/ascendra/frontend/src/pages/auth/Login.jsx';
+let content = fs.readFileSync(file, 'utf8');
 
-import { useAppContext } from '../../context/AppContext';
-
-export default function Login() {
-  const navigate = useNavigate();
-  const { login } = useAppContext();
-  const [method, setMethod] = useState('email');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+const updatedState = \  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [recoveryStep, setRecoveryStep] = useState(1);
   const [otp, setOtp] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');\;
 
-  const handleSendOtp = () => {
+content = content.replace(/  const \[isLoading, setIsLoading\] = useState\(false\);\s+const \[error, setError\] = useState\(null\);\s+const \[isForgotPassword, setIsForgotPassword\] = useState\(false\);\s+const \[recoverySent, setRecoverySent\] = useState\(false\);/, updatedState);
+
+const handleFunctions = \  const handleSendOtp = () => {
     if (!email) { setError("Please enter your email"); return; }
     setIsLoading(true);
     setError(null);
@@ -51,7 +43,7 @@ export default function Login() {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
+      const res = await fetch(\\\\\\/api/auth/reset-password\\\, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, new_password: newPassword })
@@ -60,67 +52,17 @@ export default function Login() {
       if (!res.ok) throw new Error(data.detail || 'Password reset failed');
       setRecoveryStep(4);
     } catch (err) {
-      if (err.message === 'Failed to fetch') {
-        setError(`Network Error: Could not connect to ${API_BASE_URL}`);
-      } else {
-        setError(err.message);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'Login failed');
-      
-      login(data.token, data.user);
-      navigate('/dashboard');
-    } catch (err) {
-      if (err.message === 'Failed to fetch') {
-        setError(`Network Error: Could not connect to ${API_BASE_URL}`);
-      } else {
-        setError(err.message);
-      }
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return (
-    <div className="auth-container flex-center">
-      <Link to="/" className="back-link">‚Üê Back to home</Link>
-      <div className="auth-card glass-panel animate-fade-in">
-        <div className="auth-header text-center">
-          <h2 className="h2" style={{ marginBottom: '8px' }}>Welcome Back</h2>
-          <p className="p-medium">Sign in to continue your journey</p>
-        </div>
+  const handleLogin = async (e) => {\;
 
-        <div className="auth-toggle flex-center">
-          <button 
-            className={`toggle-btn ${method === 'email' ? 'active' : ''}`}
-            onClick={() => setMethod('email')}
-          >
-            <Mail size={16} /> Email
-          </button>
-          <button 
-            className={`toggle-btn ${method === 'mobile' ? 'active' : ''}`}
-            onClick={() => setMethod('mobile')}
-          >
-            <Phone size={16} /> Mobile
-          </button>
-        </div>
+content = content.replace(/  const handleLogin = async \(e\) => \{/, handleFunctions);
 
-        <div className="auth-form" style={{ marginTop: '24px' }}>
+const renderBlock = \        <div className="auth-form" style={{ marginTop: '24px' }}>
           {error && <div style={{ color: '#EF4444', marginBottom: '16px', fontSize: '14px', textAlign: 'center' }}>{error}</div>}
           {isForgotPassword ? (
             <>
@@ -162,7 +104,7 @@ export default function Login() {
                     <label className="label">New Password</label>
                     <div className="input-wrapper">
                       <Lock className="input-icon" size={20} />
-                      <input type="password" className="input-field with-icon" placeholder="‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+                      <input type="password" className="input-field with-icon" placeholder="ïïïïïïïï" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
                     </div>
                   </div>
                   <button onClick={handleResetPassword} disabled={isLoading} className="btn-primary w-100" style={{ marginTop: '24px', width: '100%' }}>
@@ -173,7 +115,7 @@ export default function Login() {
               {recoveryStep === 4 && (
                 <div style={{ textAlign: 'center', padding: '24px 0' }}>
                   <div style={{ color: '#10B981', marginBottom: '16px' }}>
-                    <CheckCircle size={48} style={{ margin: '0 auto' }} />
+                    <Mail size={48} style={{ margin: '0 auto' }} />
                   </div>
                   <h3 className="h3">Password Updated!</h3>
                   <p className="p-medium text-muted" style={{ margin: '12px 0 24px 0' }}>Your account has been recovered successfully.</p>
@@ -209,7 +151,7 @@ export default function Login() {
                   </div>
                   <div className="input-wrapper">
                     <Lock className="input-icon" size={20} />
-                    <input type="password" className="input-field with-icon" placeholder="‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢‚Ä¢" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input type="password" className="input-field with-icon" placeholder="ïïïïïïïï" value={password} onChange={(e) => setPassword(e.target.value)} required />
                   </div>
                 </div>
 
@@ -224,12 +166,9 @@ export default function Login() {
               </p>
             </>
           )}
-        </div>
-      </div>
-    </div>
-  );
-}
+        </div>\;
 
+content = content.replace(/          \{isForgotPassword \? \([\s\S]*?<\/p>\n            <\/>\n          \)\}\n        <\/div>/, renderBlock);
 
-
-
+fs.writeFileSync(file, content);
+console.log('Login logic updated!');

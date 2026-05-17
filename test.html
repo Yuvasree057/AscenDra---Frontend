@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; }
+  .dashboard-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background: #0b0f19;
+  }
+  .sidebar {
+    width: 260px;
+    height: 100vh;
+    overflow-y: auto;
+    background: #1a1f2e;
+    color: white;
+  }
+  .dashboard-content {
+    flex: 1;
+    overflow-y: auto;
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div class="sidebar">
+      <div style="height: 2000px; padding: 20px;">Sidebar Content (very tall)</div>
+    </div>
+    <div class="dashboard-content">
+      <div style="height: 3000px; padding: 20px;">Main Content (very tall)</div>
+    </div>
+  </div>
+</body>
+</html>

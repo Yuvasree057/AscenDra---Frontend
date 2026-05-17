@@ -32,7 +32,11 @@ export default function Register() {
       login(data.token, data.user);
       navigate('/onboarding');
     } catch (err) {
-      setError(err.message);
+      if (err.message === 'Failed to fetch') {
+        setError(`Network Error: Could not connect to ${API_BASE_URL}`);
+      } else {
+        setError(err.message);
+      }
     } finally {
       setIsLoading(false);
     }
