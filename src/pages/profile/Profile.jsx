@@ -46,7 +46,7 @@ export default function Profile() {
   if (!profile) return <div className="flex-center" style={{ height: '100vh', background: 'var(--bg-navy)' }}><div className="pulsing-circle"></div></div>;
 
   const parts = formData.full_name.split(' ');
-  const initials = parts.length > 1 ? parts[0][0] + parts[1][0] : (parts[0] ? parts[0].substring(0, 2).toUpperCase() : 'U');
+  const initials = parts[0] ? parts[0][0].toUpperCase() : 'U';
 
   const handleSave = async (overrideData = null) => {
     setIsSaving(true);
