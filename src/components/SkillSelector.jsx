@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 
@@ -10,7 +11,7 @@ export default function SkillSelector({ selectedSkills, onChange }) {
   const wrapperRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/skills')
+    fetch(`${API_BASE_URL}/api/skills`)
       .then(res => res.json())
       .then(data => {
         if (data.skills) setAvailableSkills(data.skills);
@@ -20,7 +21,7 @@ export default function SkillSelector({ selectedSkills, onChange }) {
 
   useEffect(() => {
     if (selectedSkills.length > 0) {
-      fetch(`http://localhost:8000/api/suggest-skills?skills=${selectedSkills.join(',')}`)
+      fetch(`${API_BASE_URL}/api/suggest-skills?skills=${selectedSkills.join(',')}`)
         .then(res => res.json())
         .then(data => {
           if (data.suggestions) setSmartSuggestions(data.suggestions);

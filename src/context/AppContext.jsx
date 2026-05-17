@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AppContext = createContext();
@@ -20,7 +21,7 @@ export function AppProvider({ children }) {
   const fetchProfile = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/api/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/profile`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {

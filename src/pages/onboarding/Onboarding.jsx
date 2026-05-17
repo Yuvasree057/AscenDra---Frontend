@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, CheckCircle, Upload, Sparkles, Code, PenTool, TrendingUp, HeartPulse } from 'lucide-react';
@@ -26,7 +27,7 @@ export default function Onboarding() {
 
   useEffect(() => {
     // Fetch dynamic skills from backend
-    fetch('http://localhost:8000/api/skills')
+    fetch(`${API_BASE_URL}/api/skills`)
       .then(res => res.json())
       .then(data => {
         if (data.skills) setAvailableSkills(data.skills);
@@ -48,7 +49,7 @@ export default function Onboarding() {
         // Save user profile data for Profile page
         localStorage.setItem('ascendra_user_profile', JSON.stringify(payload));
         
-        const response = await fetch('http://localhost:8000/api/profile', {
+        const response = await fetch(`${API_BASE_URL}/api/profile`, {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',

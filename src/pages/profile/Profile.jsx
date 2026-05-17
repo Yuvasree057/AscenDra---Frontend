@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { 
@@ -63,7 +64,7 @@ export default function Profile() {
         profile_picture: dataToSave.profile_picture
       };
       
-      const res = await fetch('http://localhost:8000/api/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/profile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageSquare, X, Send, Sparkles, ChevronDown, RefreshCw } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
@@ -100,7 +101,7 @@ export default function Chatbot() {
     setIsTyping(true);
 
     try {
-      const res = await fetch('http://localhost:8000/api/chat', {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
