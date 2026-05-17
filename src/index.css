@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --bg-navy: #0A0F1E;
-  --bg-navy-light: #131B2F;
-  --bg-navy-lighter: #1A243F;
-  --text-white: #FFFFFF;
-  --text-muted: #94A3B8;
-  --accent-purple: #8B5CF6;
-  --accent-blue: #3B82F6;
-  --gradient-accent: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%);
-  --gradient-hover: linear-gradient(135deg, #9C72F7 0%, #5292F7 100%);
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --bg-navy: #FAF8F2; /* Soft summer wheat */
+  --bg-navy-light: #F4EED1; /* Sunlit straw */
+  --bg-navy-lighter: #EBDFA8; /* Golden sand */
+  --text-white: #3A2605; /* Deep earthy brown for text */
+  --text-muted: #8F764D; /* Muted earth */
+  --accent-purple: #E0A638; /* Sunburnt gold */
+  --accent-blue: #CE7C24; /* Warm amber */
+  --gradient-accent: linear-gradient(135deg, #EAB751 0%, #D8892D 100%);
+  --gradient-hover: linear-gradient(135deg, #F4C76C 0%, #E69D43 100%);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(224, 166, 56, 0.3);
   --border-radius: 16px;
   --border-radius-sm: 8px;
   --border-radius-lg: 24px;
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.3);
+  --shadow-sm: 0 4px 6px -1px rgba(138, 93, 21, 0.1), 0 2px 4px -1px rgba(138, 93, 21, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(138, 93, 21, 0.15), 0 4px 6px -2px rgba(138, 93, 21, 0.1);
+  --shadow-glow: 0 0 20px rgba(224, 166, 56, 0.4);
 }
 
 * {
