@@ -130,7 +130,7 @@ export default function SkillSelector({ selectedSkills, onChange }) {
                   cursor: 'pointer',
                   borderRadius: '6px',
                   transition: 'background 0.2s',
-                  color: 'white',
+                  color: 'var(--text-white)',
                   fontSize: '14px'
                 }}
                 onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
