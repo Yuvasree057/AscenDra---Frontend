@@ -1,6 +1,7 @@
 .dashboard-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: var(--bg-navy);
 }
 
@@ -16,6 +17,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow-y: auto;
   z-index: 10;
 }
 
@@ -156,5 +158,40 @@
 @media (max-width: 1024px) {
   .top-section, .middle-section {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 16px;
+  }
+  .sidebar-header {
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .nav-item {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  .sidebar-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+  .dashboard-content {
+    padding: 16px;
   }
 }
