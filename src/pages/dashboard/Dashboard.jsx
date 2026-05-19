@@ -48,40 +48,69 @@ export default function Dashboard() {
     { step: "Advanced State Management", status: "pending" }
   ];
 
-  // --- Dynamic Skill Graph Data Calculation ---
+  // --- Dynamic Skill Gap Analysis Data ---
   const userSkills = profile?.skills || [];
+  const targetSkills = topMatch?.missing_skills || [];
   const defaultSkills = ["Problem Solving", "Communication", "Logic", "Teamwork"];
   
-  // Combine user skills with defaults to ensure we have at least 5 points for a nice Radar shape
-  const graphSkills = [...new Set([...userSkills.slice(0, 4), ...defaultSkills])].slice(0, 5);
+  // Create a combined list of skills relevant to the target role
+  let graphSkills = [...new Set([...userSkills, ...targetSkills])];
+  if (graphSkills.length < 5) graphSkills = [...new Set([...graphSkills, ...defaultSkills])].slice(0, 6);
+  else graphSkills = graphSkills.slice(0, 6); // Keep it max 6 for a good radar shape
   
-  const calculateLevel = (skillName) => {
-    let level = 45; // Base level
+  const calculateLevels = (skillName) => {
+    let current = 40; // Base baseline
+    let target = 85; // Target required for a role
     
-    // If it's a user's stated skill, they get base points
-    if (userSkills.includes(skillName)) level += 25;
+    // If it's a known missing skill for this role, target is very high, current is low
+    if (targetSkills.includes(skillName)) {
+      target = 95;
+      current = 30; 
+    }
     
-    // Add streak bonus points (1 point per day, max 20)
-    level += Math.min(streak * 1.5, 20);
-    
-    // If they are currently learning something related to this skill, boost it!
-    const isLearning = roadmap.some(r => r.step.toLowerCase().includes(skillName.toLowerCase()) && r.status === 'active');
-    if (isLearning) level += 10;
+    // If user has it, current goes up
+    if (userSkills.includes(skillName)) {
+      current += 40;
+    }
 
-    // Cap at 98 for realism
-    return Math.min(Math.round(level), 98); 
+    // Add streak bonus points to current (1.5 point per day, max 20)
+    current += Math.min(streak * 1.5, 20);
+    
+    // If they are currently learning it, boost current closer to target
+    const isLearning = roadmap.some(r => r.step.toLowerCase().includes(skillName.toLowerCase()) && r.status === 'active');
+    if (isLearning) {
+      current += 15;
+    }
+
+    // Adjust target based on realistic bounds
+    if (current > target && !targetSkills.includes(skillName)) target = Math.min(current + 5, 100); 
+
+    return {
+      current: Math.min(Math.round(current), 100),
+      target: Math.min(Math.round(target), 100)
+    };
   };
 
-  const dynamicGraphData = graphSkills.map(skill => ({
-    subject: skill.length > 12 ? skill.substring(0, 10) + '..' : skill, // truncate long names
-    A: calculateLevel(skill),
-    fullMark: 100
-  }));
+  const dynamicGraphData = graphSkills.map(skill => {
+    const levels = calculateLevels(skill);
+    return {
+      subject: skill.length > 15 ? skill.substring(0, 13) + '..' : skill,
+      Current: levels.current,
+      Target: levels.target,
+      fullMark: 100
+    };
+  });
 
-  const sortedStats = [...dynamicGraphData].sort((a, b) => b.A - a.A);
-  const topSkill = sortedStats[0];
-  const lowestSkill = sortedStats[sortedStats.length - 1];
-  const dynamicAICommentary = `Your ${topSkill?.subject || 'core'} stats are giving main character energy! 🚀 Keep logging your learning to level up ${lowestSkill?.subject || 'your other skills'}.`;
+  // Calculate overall gap
+  const totalCurrent = dynamicGraphData.reduce((acc, val) => acc + val.Current, 0);
+  const totalTarget = dynamicGraphData.reduce((acc, val) => acc + val.Target, 0);
+  const gapPercentage = Math.round(((totalTarget - totalCurrent) / totalTarget) * 100);
+  
+  const biggestGapSkill = [...dynamicGraphData].sort((a, b) => (b.Target - b.Current) - (a.Target - a.Current))[0];
+  
+  const dynamicAICommentary = gapPercentage <= 10 
+    ? `You are almost a perfect fit for ${topMatch?.career_path || 'your target role'}! 🎯` 
+    : `Your biggest gap is in ${biggestGapSkill?.subject || 'core skills'}. Focus your learning there to reach ${topMatch?.career_path || 'the next level'}!`;
   // --------------------------------------------
 
   return (
@@ -181,6 +210,7 @@ export default function Dashboard() {
             <SkillGraph 
               data={dynamicGraphData}
               aiCommentary={dynamicAICommentary}
+              targetRole={topMatch?.career_path || 'Target Role'}
             />
             <div className="glass-panel stat-card" style={{ padding: '24px', flex: 1, maxHeight: '300px', overflowY: 'auto' }}>
               <div className="flex-between" style={{ marginBottom: '16px' }}>
