@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Search, ArrowLeft, Globe, User, MessageSquare } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
-import './Network.css';
 
 export default function Network() {
   const { token } = useAppContext();
