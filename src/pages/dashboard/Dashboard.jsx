@@ -2,14 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, User, Target, BookOpen, Briefcase, 
-  Settings, LogOut, Flame, Sparkles, ChevronRight, ArrowUpRight
+  Settings, LogOut, Flame, Sparkles, ChevronRight, ArrowUpRight, Plus, CheckCircle
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
+import SkillGraph from '../../components/SkillGraph';
 import './Dashboard.css';
 
 export default function Dashboard() {
   const { profile, user, logout } = useAppContext();
   const navigate = useNavigate();
+
+  const [streak, setStreak] = useState(profile?.streak_days || 0);
+  const [hasLoggedToday, setHasLoggedToday] = useState(false);
+
+  const handleLogLearning = () => {
+    if (!hasLoggedToday) {
+      setStreak(prev => prev + 1);
+      setHasLoggedToday(true);
+    }
+  };
 
   // If data is loading or missing
   if (!profile) return <div className="flex-center" style={{ height: '100vh', background: 'var(--bg-navy)' }}><div className="pulsing-circle"></div></div>;
@@ -83,9 +94,17 @@ export default function Dashboard() {
           <div className="streak-card glass-panel" style={{ padding: '16px', marginBottom: '16px', borderRadius: '12px', background: 'rgba(245, 158, 11, 0.1)', borderColor: 'rgba(245, 158, 11, 0.2)' }}>
             <div className="flex-between">
               <span className="p-small text-white font-medium">Growth Streak</span>
-              <Flame size={18} color="#F59E0B" />
+              <Flame size={18} color={hasLoggedToday ? "#F59E0B" : "var(--text-muted)"} style={{ filter: hasLoggedToday ? 'drop-shadow(0 0 8px rgba(245,158,11,0.6))' : 'none', transition: 'all 0.3s ease' }} />
             </div>
-            <div className="h2" style={{ color: '#F59E0B', marginTop: '8px' }}>{profile?.streak_days || 0} Days</div>
+            <div className="h2" style={{ color: '#F59E0B', marginTop: '8px' }}>{streak} Days</div>
+            <button 
+              onClick={handleLogLearning} 
+              disabled={hasLoggedToday}
+              className={`btn-primary flex-center`} 
+              style={{ width: '100%', marginTop: '12px', padding: '8px', fontSize: '12px', background: hasLoggedToday ? 'var(--bg-card)' : 'var(--accent-purple)', opacity: hasLoggedToday ? 0.7 : 1, cursor: hasLoggedToday ? 'default' : 'pointer' }}
+            >
+              {hasLoggedToday ? <><CheckCircle size={14} style={{ marginRight: '6px' }} /> Logged Today</> : <><Plus size={14} style={{ marginRight: '6px' }} /> Log Today's Learning</>}
+            </button>
           </div>
           <Link to="/settings" className="nav-item">
             <Settings size={20} /> Settings
@@ -118,8 +137,20 @@ export default function Dashboard() {
         )}
 
         <div className="dashboard-grid">
-          {/* Top Section: Match Summary & Next Action */}
-          <section className="top-section">
+          {/* Top Section: Match Summary & Next Action & Skill Graph */}
+          <section className="top-section" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+            
+            {/* Skill Graph Added Here */}
+            <SkillGraph 
+              data={[
+                { subject: 'Python', A: profile?.skills?.includes('Python') ? 90 : 65, fullMark: 100 },
+                { subject: 'SQL', A: profile?.skills?.includes('SQL') ? 80 : 55, fullMark: 100 },
+                { subject: 'React', A: profile?.skills?.includes('React') ? 85 : 45, fullMark: 100 },
+                { subject: 'Communication', A: 75, fullMark: 100 },
+                { subject: 'Problem Solving', A: 88, fullMark: 100 },
+              ]}
+              aiCommentary="Your Python stats are giving main character energy! 🚀 Keep building that React streak to unlock Full Stack roles."
+            />
             <div className="glass-panel stat-card" style={{ padding: '24px', flex: 1, maxHeight: '300px', overflowY: 'auto' }}>
               <div className="flex-between" style={{ marginBottom: '16px' }}>
                 <h3 className="h3">Top Career Matches</h3>
@@ -202,6 +233,6 @@ export default function Dashboard() {
   );
 }
 
-function CheckCircle({ size }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>;
+function CheckCircle({ size, style }) {
+  return <svg width={size} height={size} style={style} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>;
 }
