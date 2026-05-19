@@ -47,6 +47,43 @@ export default function Dashboard() {
     { step: "React Hooks Mastery", status: "active" },
     { step: "Advanced State Management", status: "pending" }
   ];
+
+  // --- Dynamic Skill Graph Data Calculation ---
+  const userSkills = profile?.skills || [];
+  const defaultSkills = ["Problem Solving", "Communication", "Logic", "Teamwork"];
+  
+  // Combine user skills with defaults to ensure we have at least 5 points for a nice Radar shape
+  const graphSkills = [...new Set([...userSkills.slice(0, 4), ...defaultSkills])].slice(0, 5);
+  
+  const calculateLevel = (skillName) => {
+    let level = 45; // Base level
+    
+    // If it's a user's stated skill, they get base points
+    if (userSkills.includes(skillName)) level += 25;
+    
+    // Add streak bonus points (1 point per day, max 20)
+    level += Math.min(streak * 1.5, 20);
+    
+    // If they are currently learning something related to this skill, boost it!
+    const isLearning = roadmap.some(r => r.step.toLowerCase().includes(skillName.toLowerCase()) && r.status === 'active');
+    if (isLearning) level += 10;
+
+    // Cap at 98 for realism
+    return Math.min(Math.round(level), 98); 
+  };
+
+  const dynamicGraphData = graphSkills.map(skill => ({
+    subject: skill.length > 12 ? skill.substring(0, 10) + '..' : skill, // truncate long names
+    A: calculateLevel(skill),
+    fullMark: 100
+  }));
+
+  const sortedStats = [...dynamicGraphData].sort((a, b) => b.A - a.A);
+  const topSkill = sortedStats[0];
+  const lowestSkill = sortedStats[sortedStats.length - 1];
+  const dynamicAICommentary = `Your ${topSkill?.subject || 'core'} stats are giving main character energy! 🚀 Keep logging your learning to level up ${lowestSkill?.subject || 'your other skills'}.`;
+  // --------------------------------------------
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
@@ -142,14 +179,8 @@ export default function Dashboard() {
             
             {/* Skill Graph Added Here */}
             <SkillGraph 
-              data={[
-                { subject: 'Python', A: profile?.skills?.includes('Python') ? 90 : 65, fullMark: 100 },
-                { subject: 'SQL', A: profile?.skills?.includes('SQL') ? 80 : 55, fullMark: 100 },
-                { subject: 'React', A: profile?.skills?.includes('React') ? 85 : 45, fullMark: 100 },
-                { subject: 'Communication', A: 75, fullMark: 100 },
-                { subject: 'Problem Solving', A: 88, fullMark: 100 },
-              ]}
-              aiCommentary="Your Python stats are giving main character energy! 🚀 Keep building that React streak to unlock Full Stack roles."
+              data={dynamicGraphData}
+              aiCommentary={dynamicAICommentary}
             />
             <div className="glass-panel stat-card" style={{ padding: '24px', flex: 1, maxHeight: '300px', overflowY: 'auto' }}>
               <div className="flex-between" style={{ marginBottom: '16px' }}>
