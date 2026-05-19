@@ -22,6 +22,8 @@ export default function Profile() {
     education: '',
     linkedin: '',
     github: '',
+    resume_url: '',
+    is_public: true,
     skills: [],
     interests: [],
     profile_picture: ''
@@ -34,9 +36,11 @@ export default function Profile() {
         location: profile.location || '',
         bio: profile.bio || '',
         education: profile.education || '',
-        linkedin: profile.linkedin || '',
-        github: profile.github || '',
-        skills: profile.analysis_data?.skills || [],
+        linkedin: profile.linkedin_url || profile.linkedin || '',
+        github: profile.github_url || profile.github || '',
+        resume_url: profile.resume_url || '',
+        is_public: profile.is_public !== undefined ? profile.is_public : true,
+        skills: profile.analysis_data?.skills || profile.skills || [],
         interests: profile.analysis_data?.interests || [],
         profile_picture: profile.profile_picture || ''
       });
@@ -57,8 +61,10 @@ export default function Profile() {
         location: dataToSave.location,
         bio: dataToSave.bio,
         education: dataToSave.education,
-        linkedin_url: dataToSave.linkedin_url || dataToSave.linkedin,
-        github_url: dataToSave.github_url || dataToSave.github,
+        linkedin_url: dataToSave.linkedin,
+        github_url: dataToSave.github,
+        resume_url: dataToSave.resume_url,
+        is_public: dataToSave.is_public,
         skills: dataToSave.skills,
         interests: dataToSave.interests,
         profile_picture: dataToSave.profile_picture
@@ -158,16 +164,18 @@ export default function Profile() {
                 )}
               </div>
               
-              <div className="social-links flex-center" style={{ justifyContent: 'flex-start', gap: '16px', marginTop: '16px' }}>
+              <div className="social-links flex-center" style={{ justifyContent: 'flex-start', gap: '16px', marginTop: '16px', flexWrap: 'wrap' }}>
                 {isEditing ? (
                   <>
-                    <input type="text" className="input-field" placeholder="LinkedIn URL" value={formData.linkedin_url || formData.linkedin} onChange={e => setFormData({...formData, linkedin_url: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
-                    <input type="text" className="input-field" placeholder="GitHub URL" value={formData.github_url || formData.github} onChange={e => setFormData({...formData, github_url: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
+                    <input type="text" className="input-field" placeholder="LinkedIn URL" value={formData.linkedin} onChange={e => setFormData({...formData, linkedin: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
+                    <input type="text" className="input-field" placeholder="GitHub URL" value={formData.github} onChange={e => setFormData({...formData, github: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
+                    <input type="text" className="input-field" placeholder="Resume URL (PDF/Drive Link)" value={formData.resume_url} onChange={e => setFormData({...formData, resume_url: e.target.value})} style={{ padding: '4px 8px', fontSize: '12px', width: '150px' }}/>
                   </>
                 ) : (
                   <>
-                    {(formData.linkedin_url || formData.linkedin) && <a href={formData.linkedin_url || formData.linkedin} target="_blank" rel="noreferrer" className="social-icon"><Link size={20} /> LinkedIn</a>}
-                    {(formData.github_url || formData.github) && <a href={formData.github_url || formData.github} target="_blank" rel="noreferrer" className="social-icon"><Globe size={20} /> GitHub</a>}
+                    {formData.linkedin && <a href={formData.linkedin} target="_blank" rel="noreferrer" className="social-icon"><Globe size={16} style={{marginRight:'4px'}}/> LinkedIn</a>}
+                    {formData.github && <a href={formData.github} target="_blank" rel="noreferrer" className="social-icon"><Globe size={16} style={{marginRight:'4px'}}/> GitHub</a>}
+                    {formData.resume_url && <a href={formData.resume_url} target="_blank" rel="noreferrer" className="social-icon" style={{color: 'var(--accent-purple)'}}><Link size={16} style={{marginRight:'4px'}}/> View Resume</a>}
                   </>
                 )}
               </div>
@@ -179,6 +187,21 @@ export default function Profile() {
                 <CheckCircle size={14} color="#10B981" /> Profile updated successfully
               </span>
             )}
+            
+            {/* Copy Public Link Button */}
+            {!isEditing && formData.is_public && user?.id && (
+              <button 
+                className="btn-secondary" 
+                onClick={() => {
+                  navigator.clipboard.writeText(`${window.location.origin}/u/${user.id}`);
+                  alert("Public Profile Link copied to clipboard!");
+                }}
+                title="Share your public profile"
+              >
+                <Share2 size={16} style={{marginRight: '8px'}}/> Share
+              </button>
+            )}
+
             {isEditing ? (
               <div className="flex-center" style={{ gap: '12px' }}>
                 <button className="btn-secondary" onClick={() => setIsEditing(false)}><X size={16} style={{marginRight: '8px'}}/> Cancel</button>
@@ -242,6 +265,30 @@ export default function Profile() {
           </div>
 
           <div className="profile-sidebar">
+            <section className="glass-panel section-card" style={{ marginBottom: '24px' }}>
+              <div className="flex-between" style={{ marginBottom: '16px' }}>
+                <h3 className="h3">Public Visibility</h3>
+              </div>
+              <div className="flex-center" style={{ justifyContent: 'flex-start', gap: '12px' }}>
+                <label className="switch" style={{ position: 'relative', display: 'inline-block', width: '40px', height: '24px' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={formData.is_public} 
+                    onChange={(e) => {
+                      setFormData({...formData, is_public: e.target.checked});
+                      if(!isEditing) handleSave({...formData, is_public: e.target.checked});
+                    }}
+                    style={{ opacity: 0, width: 0, height: 0 }}
+                  />
+                  <span className="slider round" style={{ position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: formData.is_public ? 'var(--accent-purple)' : 'rgba(255,255,255,0.2)', transition: '.4s', borderRadius: '34px' }}>
+                    <span style={{ position: 'absolute', height: '16px', width: '16px', left: formData.is_public ? '20px' : '4px', bottom: '4px', backgroundColor: 'white', transition: '.4s', borderRadius: '50%' }}></span>
+                  </span>
+                </label>
+                <span className="p-medium">{formData.is_public ? 'Profile is Public' : 'Profile is Private'}</span>
+              </div>
+              <p className="p-small text-muted" style={{ marginTop: '12px' }}>When public, your peers can view your profile, resume, and skills at <strong style={{color:'var(--accent-blue)'}}>/u/{user?.id || 'id'}</strong></p>
+            </section>
+
             <section className="glass-panel section-card" style={{ marginBottom: '24px' }}>
               <div className="flex-between" style={{ marginBottom: '16px' }}>
                 <h3 className="h3">Skills</h3>
