@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, User, Target, BookOpen, Briefcase, 
-  Settings, LogOut, Flame, Sparkles, ChevronRight, ArrowUpRight, Plus, CheckCircle
+  Settings, LogOut, Flame, Sparkles, ChevronRight, ArrowUpRight, Plus, CheckCircle, MessageSquare, Globe
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import SkillGraph from '../../components/SkillGraph';
@@ -131,7 +131,7 @@ export default function Dashboard() {
           </div>
           <div className="text-center">
             <h4 className="font-medium text-white">{userName}</h4>
-            <p className="p-small text-muted">{topMatch ? topMatch.career_path : 'Career Explorer'}</p>
+            <p className="p-small text-muted">{profile?.bio || 'Career Explorer'}</p>
           </div>
         </div>
         
@@ -141,6 +141,12 @@ export default function Dashboard() {
           </Link>
           <Link to="/profile" className="nav-item">
             <User size={20} /> Profile
+          </Link>
+          <Link to="/network" className="nav-item">
+            <Globe size={20} /> Network
+          </Link>
+          <Link to="/messages" className="nav-item">
+            <MessageSquare size={20} /> Messages
           </Link>
           <button onClick={() => window.dispatchEvent(new Event('open-milliena-chat'))} className="nav-item" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', color: 'var(--accent-purple)' }}>
             <Sparkles size={20} /> Milliena AI

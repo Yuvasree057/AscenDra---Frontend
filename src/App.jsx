@@ -7,6 +7,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Profile from './pages/profile/Profile';
 import PublicProfile from './pages/profile/PublicProfile';
 import Messages from './pages/messages/Messages';
+import Network from './pages/network/Network';
 import Roadmap from './pages/Roadmap';
 import Internships from './pages/Internships';
 import Learning from './pages/Learning';
@@ -40,6 +41,7 @@ function App() {
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/u/:id" element={<PublicProfile />} />
         <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+        <Route path="/network" element={<ProtectedRoute><Network /></ProtectedRoute>} />
         <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         <Route path="/internships" element={<ProtectedRoute><Internships /></ProtectedRoute>} />
         <Route path="/learning" element={<ProtectedRoute><Learning /></ProtectedRoute>} />
