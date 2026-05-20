@@ -160,15 +160,32 @@ export default function Messages() {
           <div className="conversations-list">
             {isLoadingChats ? (
               <div className="flex-center" style={{ padding: '40px' }}><div className="pulsing-circle"></div></div>
-            ) : conversations.length === 0 ? (
-              <p className="p-medium text-muted" style={{ textAlign: 'center', marginTop: '40px' }}>No conversations yet. Connect with peers from their public profiles!</p>
             ) : (
-              conversations.map(c => (
+              <>
+                {/* Milliena Quick Access */}
                 <div 
-                  key={c.id} 
-                  className={`conversation-item ${activeChat?.id === c.id ? 'active' : ''}`}
-                  onClick={() => setActiveChat(c)}
+                  className="conversation-item"
+                  onClick={() => window.dispatchEvent(new Event('open-milliena-chat'))}
+                  style={{ background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.1)', marginBottom: '16px' }}
                 >
+                  <div className="avatar-wrapper" style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span className="h3 text-white">✨</span>
+                  </div>
+                  <div style={{ overflow: 'hidden' }}>
+                    <h4 className="font-medium text-white">Milliena AI</h4>
+                    <p className="p-small" style={{ color: '#F59E0B' }}>Chat with your AI Mentor</p>
+                  </div>
+                </div>
+
+                {conversations.length === 0 ? (
+                  <p className="p-medium text-muted" style={{ textAlign: 'center', marginTop: '20px' }}>No peer conversations yet.</p>
+                ) : (
+                  conversations.map(c => (
+                    <div 
+                      key={c.id} 
+                      className={`conversation-item ${activeChat?.id === c.id ? 'active' : ''}`}
+                      onClick={() => setActiveChat(c)}
+                    >
                   <div className="avatar-wrapper" style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--bg-navy)', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {c.profile_picture ? (
                       <img src={c.profile_picture} alt={c.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -184,6 +201,8 @@ export default function Messages() {
                   </div>
                 </div>
               ))
+            )}
+              </>
             )}
           </div>
         </aside>

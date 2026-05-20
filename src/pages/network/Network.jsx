@@ -60,9 +60,19 @@ export default function Network() {
               placeholder="Search by name or keywords..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{ paddingLeft: '48px', paddingRight: '120px', width: '100%', height: '56px', borderRadius: '28px' }}
+              style={{ 
+                paddingLeft: '48px', 
+                paddingRight: '120px', 
+                width: '100%', 
+                height: '56px', 
+                borderRadius: '28px',
+                background: '#ffffff',
+                border: '2px solid #F59E0B',
+                color: '#1a1a2e',
+                boxShadow: '0 4px 20px rgba(245, 158, 11, 0.15)'
+              }}
             />
-            <button type="submit" className="btn-primary" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', padding: '8px 16px', borderRadius: '20px' }}>
+            <button type="submit" className="btn-primary" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', padding: '8px 20px', borderRadius: '20px', background: 'var(--accent-purple)', fontWeight: 'bold' }}>
               Search
             </button>
           </form>
@@ -86,9 +96,20 @@ export default function Network() {
                     </div>
                     
                     <div style={{ flex: 1 }}>
-                      <h3 className="h3" style={{ marginBottom: '4px' }}>{p.name}</h3>
-                      {p.bio && !p.bio.toLowerCase().includes('software dev') && p.bio !== 'Career Explorer' && (
+                      <h3 className="h3" style={{ marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {p.name}
+                        {p.top_match && <span className="badge" style={{ background: 'rgba(139,92,246,0.1)', color: 'var(--accent-purple)', fontSize: '11px', padding: '2px 8px' }}>{p.top_match}</span>}
+                      </h3>
+                      
+                      <div style={{ display: 'flex', gap: '16px', marginBottom: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
+                        {p.location && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>📍 {p.location}</span>}
+                        {p.education && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>🎓 {p.education}</span>}
+                      </div>
+
+                      {p.bio && !p.bio.toLowerCase().includes('software dev') && p.bio !== 'Career Explorer' ? (
                         <p className="p-medium text-muted" style={{ marginBottom: '12px', lineHeight: 1.4 }}>{p.bio}</p>
+                      ) : (
+                        <p className="p-medium text-muted" style={{ marginBottom: '12px', fontStyle: 'italic', opacity: 0.6 }}>{p.name.split(' ')[0]} hasn't filled out their bio yet.</p>
                       )}
                       
                       {p.skills && p.skills.length > 0 && (
@@ -101,10 +122,10 @@ export default function Network() {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '140px' }}>
-                      <RouterLink to={`/u/${p.id}`} className="btn-secondary flex-center" style={{ width: '100%', padding: '10px' }}>
+                      <RouterLink to={`/u/${p.id}`} className="btn-secondary flex-center" style={{ width: '100%', padding: '10px', borderRadius: '12px', transition: 'all 0.3s ease', transform: 'scale(1)', ':hover': { transform: 'scale(1.05)' } }}>
                         <User size={16} style={{ marginRight: '6px' }} /> View Profile
                       </RouterLink>
-                      <RouterLink to={`/messages?to=${p.id}`} className="btn-primary flex-center" style={{ width: '100%', padding: '10px' }}>
+                      <RouterLink to={`/messages?to=${p.id}`} className="btn-primary flex-center" style={{ width: '100%', padding: '10px', borderRadius: '12px', background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)', boxShadow: '0 4px 15px rgba(139,92,246,0.3)', transition: 'all 0.3s ease' }}>
                         <MessageSquare size={16} style={{ marginRight: '6px' }} /> Connect
                       </RouterLink>
                     </div>
