@@ -67,40 +67,47 @@ export default function Network() {
         {isLoading ? (
           <div className="flex-center" style={{ padding: '60px' }}><div className="pulsing-circle"></div></div>
         ) : (
-          <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+          <div className="dashboard-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '800px', margin: '0 auto' }}>
             {profiles.length > 0 ? (
               profiles.map(p => (
-                <div key={p.id} className="glass-panel stat-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column' }}>
-                  <div className="flex-between" style={{ alignItems: 'flex-start', marginBottom: '16px' }}>
-                    <div className="avatar-wrapper" style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--bg-navy)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div key={p.id} className="glass-panel stat-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  
+                  <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                    <div className="avatar-wrapper" style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'var(--bg-navy)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       {p.profile_picture ? (
                         <img src={p.profile_picture} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
                         <span className="h2 text-white">{p.name ? p.name[0].toUpperCase() : 'U'}</span>
                       )}
                     </div>
+                    
+                    <div style={{ flex: 1 }}>
+                      <h3 className="h3" style={{ marginBottom: '4px' }}>{p.name}</h3>
+                      {p.bio && <p className="p-medium text-muted" style={{ marginBottom: '12px', lineHeight: 1.4 }}>{p.bio}</p>}
+                      
+                      {p.skills && p.skills.length > 0 && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                          {p.skills.map((s, idx) => (
+                            <span key={idx} className="badge" style={{ background: 'rgba(139, 92, 246, 0.1)', color: 'var(--accent-purple)', fontSize: '12px', padding: '4px 10px' }}>{s}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '140px' }}>
+                      <RouterLink to={`/u/${p.id}`} className="btn-secondary flex-center" style={{ width: '100%', padding: '10px' }}>
+                        <User size={16} style={{ marginRight: '6px' }} /> View Profile
+                      </RouterLink>
+                      <RouterLink to={`/messages?to=${p.id}`} className="btn-primary flex-center" style={{ width: '100%', padding: '10px' }}>
+                        <MessageSquare size={16} style={{ marginRight: '6px' }} /> Connect
+                      </RouterLink>
+                    </div>
                   </div>
-                  <h3 className="h3" style={{ marginBottom: '4px' }}>{p.name}</h3>
-                  <p className="p-small text-muted" style={{ marginBottom: '16px', flex: 1 }}>{p.bio}</p>
-                  
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '24px' }}>
-                    {p.skills?.map((s, idx) => (
-                      <span key={idx} className="badge" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>{s}</span>
-                    ))}
-                  </div>
-                  
-                  <div className="flex-between" style={{ gap: '12px' }}>
-                    <RouterLink to={`/u/${p.id}`} className="btn-secondary flex-center" style={{ flex: 1, padding: '8px', fontSize: '14px' }}>
-                      <User size={16} style={{ marginRight: '6px' }} /> View Profile
-                    </RouterLink>
-                    <RouterLink to={`/messages?to=${p.id}`} className="btn-primary flex-center" style={{ flex: 1, padding: '8px', fontSize: '14px' }}>
-                      <MessageSquare size={16} style={{ marginRight: '6px' }} /> Connect
-                    </RouterLink>
-                  </div>
+
                 </div>
               ))
             ) : (
-              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px' }}>
+              <div style={{ textAlign: 'center', padding: '60px' }}>
                 <Globe size={48} color="var(--text-muted)" style={{ margin: '0 auto 16px', opacity: 0.5 }} />
                 <h3 className="h3 text-white">No Profiles Found</h3>
                 <p className="p-medium text-muted">Try adjusting your search terms.</p>

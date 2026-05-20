@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, User, Target, BookOpen, Briefcase, 
-  Settings, LogOut, Flame, Sparkles, ChevronRight, ArrowUpRight, Plus, CheckCircle, MessageSquare, Globe
+  Settings, LogOut, Flame, Sparkles, ChevronRight, ArrowUpRight, Plus, CheckCircle, MessageSquare, Globe, MapPin
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import SkillGraph from '../../components/SkillGraph';
@@ -131,7 +131,9 @@ export default function Dashboard() {
           </div>
           <div className="text-center">
             <h4 className="font-medium text-white">{userName}</h4>
-            <p className="p-small text-muted">{profile?.bio || 'Career Explorer'}</p>
+            <p className="p-small text-muted flex-center" style={{ gap: '4px', marginTop: '4px' }}>
+              <MapPin size={12} /> {profile?.location || 'Add location in Profile'}
+            </p>
           </div>
         </div>
         
