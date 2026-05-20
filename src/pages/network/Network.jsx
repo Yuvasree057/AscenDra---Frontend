@@ -11,8 +11,12 @@ export default function Network() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchProfiles();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      fetchProfiles(search);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
 
   const fetchProfiles = async (query = '') => {
     setIsLoading(true);
@@ -83,7 +87,9 @@ export default function Network() {
                     
                     <div style={{ flex: 1 }}>
                       <h3 className="h3" style={{ marginBottom: '4px' }}>{p.name}</h3>
-                      {p.bio && <p className="p-medium text-muted" style={{ marginBottom: '12px', lineHeight: 1.4 }}>{p.bio}</p>}
+                      {p.bio && !p.bio.toLowerCase().includes('software dev') && p.bio !== 'Career Explorer' && (
+                        <p className="p-medium text-muted" style={{ marginBottom: '12px', lineHeight: 1.4 }}>{p.bio}</p>
+                      )}
                       
                       {p.skills && p.skills.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
