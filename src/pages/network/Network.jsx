@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Search, ArrowLeft, Globe, User, MessageSquare } from 'lucide-react';
+import { Search, ArrowLeft, Globe, User, MessageSquare, Code, Briefcase, FileText } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 
 export default function Network() {
@@ -57,7 +57,7 @@ export default function Network() {
             <input 
               type="text" 
               className="input-field" 
-              placeholder="Search by name or keywords..." 
+              placeholder="Search by username or keywords..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{ 
@@ -66,10 +66,10 @@ export default function Network() {
                 width: '100%', 
                 height: '56px', 
                 borderRadius: '28px',
-                background: '#ffffff',
-                border: '2px solid #F59E0B',
-                color: '#1a1a2e',
-                boxShadow: '0 4px 20px rgba(245, 158, 11, 0.15)'
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: 'var(--text-white)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
               }}
             />
             <button type="submit" className="btn-primary" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', padding: '8px 20px', borderRadius: '20px', background: 'var(--accent-purple)', fontWeight: 'bold' }}>
@@ -110,6 +110,15 @@ export default function Network() {
                         <p className="p-medium text-muted" style={{ marginBottom: '12px', lineHeight: 1.4 }}>{p.bio}</p>
                       ) : (
                         <p className="p-medium text-muted" style={{ marginBottom: '12px', fontStyle: 'italic', opacity: 0.6 }}>{p.name.split(' ')[0]} hasn't filled out their bio yet.</p>
+                      )}
+                      
+                      {/* Social Links */}
+                      {(p.linkedin_url || p.github_url || p.resume_url) && (
+                        <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                          {p.linkedin_url && <a href={p.linkedin_url} target="_blank" rel="noreferrer" className="text-muted hover:text-white transition"><Briefcase size={16} /></a>}
+                          {p.github_url && <a href={p.github_url} target="_blank" rel="noreferrer" className="text-muted hover:text-white transition"><Code size={16} /></a>}
+                          {p.resume_url && <a href={p.resume_url} target="_blank" rel="noreferrer" className="text-muted hover:text-white transition" style={{ color: 'var(--accent-purple)' }}><FileText size={16} /></a>}
+                        </div>
                       )}
                       
                       {p.skills && p.skills.length > 0 && (
